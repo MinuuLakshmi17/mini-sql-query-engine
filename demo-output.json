@@ -1,0 +1,20 @@
+[
+  {
+    "query": "SELECT name, salary FROM employees WHERE salary >= 110000 ORDER BY salary DESC LIMIT 3",
+    "exit_code": 0,
+    "stdout": "{\n  \"columns\": [\n    \"name\",\n    \"salary\"\n  ],\n  \"rows\": [\n    [\n      \"Grace\",\n      \"130000\"\n    ],\n    [\n      \"Ada\",\n      \"120000\"\n    ],\n    [\n      \"Linus\",\n      \"110000\"\n    ]\n  ],\n  \"elapsed_seconds\": 0.0002110689997607551\n}\n\nPLAN\nLimit: 3\n  Sort: order_by=(OrderItem(expr=Identifier(name='salary'), descending=True),)\n    Filter: Binary(left=Identifier(name='salary'), op='>=', right=Literal(value=110000))\n      TableScan: employees\n",
+    "stderr": "t\n  File \"/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py\", line 764, in __call__\n  File \"/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py\", line 175, in call\nartifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.\n"
+  },
+  {
+    "query": "SELECT department_id, COUNT(*) AS headcount, AVG(salary) AS avg_salary FROM employees GROUP BY department_id ORDER BY department_id",
+    "exit_code": 0,
+    "stdout": "{\n  \"columns\": [\n    \"department_id\",\n    \"headcount\",\n    \"avg_salary\"\n  ],\n  \"rows\": [\n    [\n      \"10\",\n      2,\n      125000.0\n    ],\n    [\n      \"20\",\n      1,\n      110000.0\n    ],\n    [\n      \"30\",\n      1,\n      90000.0\n    ]\n  ],\n  \"elapsed_seconds\": 0.0002332419999220292\n}\n\nPLAN\nSort: order_by=(OrderItem(expr=Identifier(name='department_id'), descending=False),)\n  Aggregate: group_by=(Identifier(name='department_id'),)\n    TableScan: employees\n",
+    "stderr": "t\n  File \"/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py\", line 764, in __call__\n  File \"/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py\", line 175, in call\nartifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.\n"
+  },
+  {
+    "query": "SELECT employees.name, departments.name AS department FROM employees INNER JOIN departments ON employees.department_id = departments.id ORDER BY employees.name",
+    "exit_code": 0,
+    "stdout": "{\n  \"columns\": [\n    \"employees.name\",\n    \"department\"\n  ],\n  \"rows\": [\n    [\n      \"Ada\",\n      \"Engineering\"\n    ],\n    [\n      \"Grace\",\n      \"Engineering\"\n    ],\n    [\n      \"Ken\",\n      \"Operations\"\n    ],\n    [\n      \"Linus\",\n      \"Research\"\n    ]\n  ],\n  \"elapsed_seconds\": 0.00029795000000376604\n}\n\nPLAN\nSort: order_by=(OrderItem(expr=Identifier(name='employees.name'), descending=False),)\n  InnerJoin: Identifier(name='employees.department_id') = Identifier(name='departments.id')\n    TableScan: employees\n    TableScan: departments\n",
+    "stderr": "t\n  File \"/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/remote.py\", line 764, in __call__\n  File \"/tmp/tmp.QlpUkOUI9D/artifact_tool_v2-2.8.66/artifact_tool/rpc/client.py\", line 175, in call\nartifact_tool.rpc.client.RemoteError: Element ordering requires an owning element collection.\n"
+  }
+]
